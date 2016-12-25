@@ -1,0 +1,8 @@
+<div  style="margin-right: auto; margin-left: auto; width: 800px; direction: rtl;">
+<md-card>
+<md-card-title>{{sectionname}}</md-card-title>
+<md-card-content>
+<section *ngFor = "let section of sections" [node]="section" ></section>
+</md-card-content>
+</md-card>
+</div>

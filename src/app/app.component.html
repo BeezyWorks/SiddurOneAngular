@@ -1,3 +1,4 @@
-<h1>
-  {{title}}
-</h1>
+<md-toolbar color="accent">
+  <span>Siddur One</span>
+</md-toolbar>
+<root-node *ngFor="let tefila of tefilot" [name]="tefila"></root-node>
