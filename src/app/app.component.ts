@@ -7,6 +7,7 @@ import { AngularFire, FirebaseObjectObservable, FirebaseListObservable, Firebase
   styleUrls: ['./app.component.css']
 })
 
+
 export class AppComponent {
   tefilot: string[] = [];
 
