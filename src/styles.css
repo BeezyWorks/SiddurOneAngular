@@ -1,3 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
 @import url('https://fonts.googleapis.com/css?family=Lato|Roboto+Slab|Frank+Ruhl+Libre');
+
+.content-text{
+  text-align: right;
+  direction: rtl;
+  line-height: 120%;
+}

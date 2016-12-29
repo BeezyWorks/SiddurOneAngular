@@ -37,8 +37,6 @@ export class TextObject {
         }
 
       }
-      console.log(this.openingTag);
-      console.log(this.closingTag);
       this.text = this.openingTag + this.text + this.closingTag;
     }
 

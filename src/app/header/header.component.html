@@ -2,15 +2,20 @@
   <p class="title">Siddur One</p>
 
   <button class="nusach-button" md-button [mdMenuTriggerFor]="menu">
-Nussach
+{{userPrefs.userNusach.hebrewTitle}}
 </button>
 
-  <md-menu  x-position="before" #menu="mdMenu">
-    <button md-menu-item> אשכנז </button>
-    <button md-menu-item> ספרד </button>
-    <button md-menu-item> ק''ק הספרדים </button>
+  <md-menu x-position="before" #menu="mdMenu">
+    <div *ngFor = "let nusach of userPrefs.nuschos">
+      <button md-menu-item (click)="nusachPicked(nusach)"> {{nusach.hebrewTitle}}</button>
+    </div>
   </md-menu>
 
   <h3 class="date-title">{{dateTitle}}</h3>
 </div>
-<div class="tab-bar"></div>
+
+<div [fxLayout]="row" class="tab-bar">
+  <div *ngFor="let tab of navTabs">
+    <button class="nav-tab" md-button routerLink={{tab.routing}} routerLinkActive="inactive">{{tab.title}}</button>
+  </div>
+</div>

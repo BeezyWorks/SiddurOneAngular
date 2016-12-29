@@ -1,26 +1,19 @@
 import { Component } from '@angular/core';
-import {HebrewDateService} from './hebrew-date.service';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable, FirebaseRef } from 'angularfire2';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  providers: [HebrewDateService]
+  styleUrls: ['./app.component.css']
 })
 
 
 export class AppComponent {
   tefilot: string[] = [];
 
-  constructor(public af: AngularFire, private hebrewDate: HebrewDateService) {
-    this.af.database.list('/tefilot', { preserveSnapshot: true})
-    .subscribe(snapshots=>{
-        snapshots.forEach(snapshot => {
-          this.tefilot.push(snapshot.key);
-        });
-    });
+  constructor() {
+
   }
 }
 
