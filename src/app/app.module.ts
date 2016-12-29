@@ -10,6 +10,9 @@ import {RootNodeComponent} from './rootnode.component';
 import {SectionComponent} from './section.component';
 import {TefilaComponent} from './tefila.component';
 import {BrochaComponent} from './brocha.component';
+import { HeaderComponent } from './header/header.component';
+import {HebrewDateService} from './hebrew-date.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export const firebaseConfig = {
     apiKey: "AIzaSyBDpTCrfZknC0uYnTdeedD3NC4joV8gSus",
@@ -25,14 +28,16 @@ export const firebaseConfig = {
     RootNodeComponent,
     SectionComponent,
     TefilaComponent,
-    BrochaComponent
+    BrochaComponent,
+    HeaderComponent
   ],
   imports: [
     MaterialModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    FlexLayoutModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,16 @@
+<div class="header">
+  <p class="title">Siddur One</p>
+
+  <button class="nusach-button" md-button [mdMenuTriggerFor]="menu">
+Nussach
+</button>
+
+  <md-menu  x-position="before" #menu="mdMenu">
+    <button md-menu-item> אשכנז </button>
+    <button md-menu-item> ספרד </button>
+    <button md-menu-item> ק''ק הספרדים </button>
+  </md-menu>
+
+  <h3 class="date-title">{{dateTitle}}</h3>
+</div>
+<div class="tab-bar"></div>
