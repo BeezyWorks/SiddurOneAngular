@@ -1,3 +1,9 @@
+.tefila-list-header h3{
+  text-align: right;
+  cursor: pointer;
+}
+
+
 .section-title{
   color: #2962FF;
   text-align: right;

@@ -6,7 +6,7 @@ import {UserPrefsService} from '../user-prefs.service';
   selector: 'header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
-  providers: [HebrewDateService, UserPrefsService]
+  providers: [HebrewDateService, UserPrefsService],
 })
 export class HeaderComponent implements OnInit {
   dateTitle: string;

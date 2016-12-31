@@ -1,42 +1,59 @@
 <div class="content" [fxLayout]="direction">
   <!-- spacer -->
-  <div fxFlex="5"></div>
+  <div fxFlex="3"></div>
 
   <!-- Top level navigation -->
-  <div fxFlex="10" class="side-card">
-    <div *ngFor="let tefila of tefilot">
-      <h2 (click)="tefilaSelected(tefila)">{{tefila.name}}</h2>
-    </div>
+  <div class="tefila-list-header" fxFlex="20">
+    <md-card>
+      <md-list>
+        <h3 md-subheader>תפילות</h3>
+        <md-list-item *ngFor="let tefila of tefilot">
+          <h3 md-line (click)="tefilaSelected(tefila)">{{tefila.name}}</h3>
+        </md-list-item>
+        <md-divider></md-divider>
+        <h3 md-subheader>ברכות</h3>
+        <md-list-item *ngFor="let brocha of brochos">
+          <h3 md-line (click)="tefilaSelected(brocha)">{{brocha.name}}</h3>
+        </md-list-item>
+      </md-list>
+    </md-card>
   </div>
 
   <!-- spacer -->
-  <div fxFlex="5"></div>
+  <div fxFlex="2"></div>
 
   <!-- Main Content -->
   <div fxFlex="60" class="center-card">
-    <div *ngFor="let section of sections">
-      <md-card>
-        <md-card-content>
+
+    <md-card>
+      <md-card-content>
+        <div *ngFor="let section of sections">
           <h3 class="section-title"> {{section.name}} </h3>
           <div *ngFor="let path of section.brochaRoutes">
             <app-text [brochaPath]="path"></app-text>
           </div>
-        </md-card-content>
-      </md-card>
-    </div>
+          <md-divider></md-divider>
+        </div>
+      </md-card-content>
+    </md-card>
+
 
   </div>
 
   <!-- spacer -->
-  <div fxFlex="7"></div>
+  <div fxFlex="3"></div>
 
   <!-- Secondary Navigation -->
-  <div fxFlex="10" class="right-card">
-    <div *ngFor="let section of sections">
-      <h3> {{section.name}} </h3>
-    </div>
-  </div>
+  <md-card class="tefila-list-header" fxFlex="15" >
+    <md-card-content>
+      <md-list>
+        <md-list-item *ngFor="let section of sections">
+          <h3  md-line > {{section.name}} </h3>
+        </md-list-item>
+      </md-list>
+    </md-card-content>
+  </md-card>
 
   <!-- Spacer -->
-  <div fxFlex="3"></div>
+  <div fxFlex="1"></div>
 </div>

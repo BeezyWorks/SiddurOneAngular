@@ -10,7 +10,7 @@ nuschos: Nusach[]=[
 ]
 
 userNusach: Nusach = this.nuschos[0];
-
+wedding: boolean = false;
   constructor() { }
 
 }

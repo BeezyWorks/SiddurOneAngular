@@ -7,10 +7,6 @@ import { MaterialModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import {RootNodeComponent} from './rootnode.component';
-import {SectionComponent} from './section.component';
-import {TefilaComponent} from './tefila.component';
-import {BrochaComponent} from './brocha.component';
 import { HeaderComponent } from './header/header.component';
 import {HebrewDateService} from './hebrew-date.service';
 import {UserPrefsService} from './user-prefs.service';
@@ -38,10 +34,6 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    RootNodeComponent,
-    SectionComponent,
-    TefilaComponent,
-    BrochaComponent,
     HeaderComponent,
     AboutComponent,
     SiddurComponent,

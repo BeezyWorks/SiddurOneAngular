@@ -11,32 +11,45 @@ import {UserPrefsService} from '../user-prefs.service';
 })
 export class SiddurComponent implements OnInit {
   tefilot: Tefila[] = [];
+  brochos: Tefila[] = [];
   sections: Section[] = [];
 
   constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
+    this.getTopLevel('tefilot/');
+    this.getTopLevel('brochos/');
+  }
 
+  getTopLevel(topLevel: string) {
     //get all tefilot in the tefila node of the db
-    this.af.database.list('/tefilot', { preserveSnapshot: true })
+    this.af.database.list(topLevel, { preserveSnapshot: true })
       .subscribe(snapshots => {
-        snapshots.forEach(snapshot => {
-          var tefila = new Tefila();
-          var includedInNusach = false;
-          tefila.name = snapshot.val()['title'];
+        snapshots.forEach(fetched => {
+          var array = fetched.val();
+          for (var node in array) {
+            var tefila = new Tefila();
+            var includedInNusach = false;
+            tefila.name = array[node]['title'];
 
-          //check that the tefila has at least one section for our nusach
-          for (var key in snapshot.val()) {
-            if (key.includes(userPrefs.userNusach.key)) {
-              // add a section ref for each section in the array
-              for (var sectionRef of snapshot.val()[key]) {
-                tefila.sectionRoutes.push(sectionRef['section']);
+            //check that the tefila has at least one section for our nusach
+            for (var key in array[node]) {
+              if (key.includes(this.userPrefs.userNusach.key)) {
+                // add a section ref for each section in the array
+                for (var sectionRef of array[node][key]) {
+                  tefila.sectionRoutes.push(sectionRef['section']);
+                }
+                includedInNusach = true;
               }
-              includedInNusach = true;
             }
-          }
 
-          //if it has at leas one section, push it to the array
-          if (includedInNusach) {
-            this.tefilot.push(tefila);
+            //if it has at leas one section, push it to the array
+            if (includedInNusach) {
+              if (topLevel.includes('tefilot')) {
+                this.tefilot.push(tefila);
+              }
+              if (topLevel.includes('brochos')) {
+                this.brochos.push(tefila);
+              }
+            }
           }
         });
       })
@@ -46,7 +59,7 @@ export class SiddurComponent implements OnInit {
   }
 
   tefilaSelected(tefila) {
-    this.sections = [];
+    this.sections.length = 0;
 
     for (var section of tefila.sectionRoutes) {
       this.af.database.list('sections/' + section, { preserveSnapshot: true })
@@ -63,8 +76,6 @@ export class SiddurComponent implements OnInit {
               for (var brocha of snapshot.val()) {
                 for (var brochaKey in brocha) {
                   var route = brochaKey + '/' + brocha[brochaKey];
-
-                  console.log(route);
                   section.brochaRoutes.push(brochaKey + '/' + brocha[brochaKey]);
                 }
               }
