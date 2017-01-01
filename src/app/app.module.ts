@@ -2,9 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 import { MaterialModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
+import {StickyModule} from 'ng2-sticky-kit/ng2-sticky-kit';
+import {Gravatar} from 'ng2-gravatar-directive';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -24,6 +26,11 @@ export const firebaseConfig = {
   messagingSenderId: "58775725392"
 };
 
+const firebaseAuthConfig = {
+  provider: AuthProviders.Google,
+  method: AuthMethods.Redirect
+};
+
 const appRoutes: Routes = [
   { path: 'siddur', component: SiddurComponent },
   { path: 'about', component: AboutComponent },
@@ -38,16 +45,18 @@ const appRoutes: Routes = [
     AboutComponent,
     SiddurComponent,
     TextComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    Gravatar
   ],
   imports: [
     MaterialModule.forRoot(),
     BrowserModule,
     FormsModule,
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     FlexLayoutModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    StickyModule
   ],
   providers: [],
   bootstrap: [AppComponent]

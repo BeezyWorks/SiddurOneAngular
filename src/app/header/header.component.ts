@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {HebrewDateService} from '../hebrew-date.service';
-import {UserPrefsService} from '../user-prefs.service';
+import { HebrewDateService } from '../hebrew-date.service';
+import { UserPrefsService } from '../user-prefs.service';
+import { AngularFire } from 'angularfire2';
 
 @Component({
   selector: 'header',
@@ -17,7 +18,7 @@ export class HeaderComponent implements OnInit {
     { title: 'About', routing: '/about' }
   ];
 
-  constructor(private hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
+  constructor(private hebrewDate: HebrewDateService, public userPrefs: UserPrefsService, public af: AngularFire) {
     this.dateTitle = hebrewDate.formattedDate;
   }
 
@@ -26,6 +27,14 @@ export class HeaderComponent implements OnInit {
 
   nusachPicked(selected) {
     this.userPrefs.userNusach = selected;
+  }
+
+  login() {
+    this.af.auth.login();
+  }
+
+  logout(){
+    this.af.auth.logout();
   }
 
 

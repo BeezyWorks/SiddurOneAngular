@@ -6,14 +6,31 @@
 </button>
 
   <md-menu x-position="before" #menu="mdMenu">
-    <div *ngFor = "let nusach of userPrefs.nuschos">
+    <div *ngFor="let nusach of userPrefs.nuschos">
       <button md-menu-item (click)="nusachPicked(nusach)"> {{nusach.hebrewTitle}}</button>
     </div>
   </md-menu>
 
-  <h3 class="date-title">{{dateTitle}}</h3>
+  <!--login button, only if not logged in-->
+  <div class="login-area" *ngIf="(af.auth | async)=== (null)">
+    <button (click)="login()" md-button class="login-button">Log in</button>
+  </div>
+
+  <!--user info/log out area-->
+  <div *ngIf="(af.auth | async)" class="login-area">
+    <div [fxLayout]="row" [mdMenuTriggerFor]="logoutMenu">
+      <p class="user-email"> {{(af.auth |async ).auth.displayName}}<br>{{(af.auth |async ).auth.email}}</p>
+      <img src="{{(af.auth|async).auth.photoURL}}" height="32" width="32" style="margin-left: 16px; margin-top: 8px;">
+</div>
+<md-menu x-position="before" #logoutMenu="mdMenu">
+  <button md-menu-item (click)="logout()">Log out</button>
+</md-menu>
 </div>
 
+<h3 class="date-title">{{dateTitle}}</h3>
+</div>
+
+<!--bottom nav tabs-->
 <div [fxLayout]="row" class="tab-bar">
   <div *ngFor="let tab of navTabs">
     <button class="nav-tab" md-button routerLink={{tab.routing}} routerLinkActive="inactive">{{tab.title}}</button>

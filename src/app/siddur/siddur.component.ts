@@ -24,17 +24,17 @@ export class SiddurComponent implements OnInit {
     this.af.database.list(topLevel, { preserveSnapshot: true })
       .subscribe(snapshots => {
         snapshots.forEach(fetched => {
-          var array = fetched.val();
-          for (var node in array) {
-            var tefila = new Tefila();
-            var includedInNusach = false;
+          let array = fetched.val();
+          for (let node in array) {
+            let tefila = new Tefila();
+            let includedInNusach = false;
             tefila.name = array[node]['title'];
 
             //check that the tefila has at least one section for our nusach
-            for (var key in array[node]) {
+            for (let key in array[node]) {
               if (key.includes(this.userPrefs.userNusach.key)) {
                 // add a section ref for each section in the array
-                for (var sectionRef of array[node][key]) {
+                for (let sectionRef of array[node][key]) {
                   tefila.sectionRoutes.push(sectionRef['section']);
                 }
                 includedInNusach = true;
@@ -61,10 +61,10 @@ export class SiddurComponent implements OnInit {
   tefilaSelected(tefila) {
     this.sections.length = 0;
 
-    for (var section of tefila.sectionRoutes) {
+    for (let section of tefila.sectionRoutes) {
       this.af.database.list('sections/' + section, { preserveSnapshot: true })
         .subscribe(snapshots => {
-          var section = new Section();
+          let section = new Section();
           snapshots.forEach(snapshot => {
             //get title of section and add it
             if (snapshot.key == 'title') {
@@ -73,9 +73,9 @@ export class SiddurComponent implements OnInit {
 
             //get our nusach's version of this section
             if (snapshot.key.includes(this.userPrefs.userNusach.key)) {
-              for (var brocha of snapshot.val()) {
-                for (var brochaKey in brocha) {
-                  var route = brochaKey + '/' + brocha[brochaKey];
+              for (let brocha of snapshot.val()) {
+                for (let brochaKey in brocha) {
+                  let route = brochaKey + '/' + brocha[brochaKey];
                   section.brochaRoutes.push(brochaKey + '/' + brocha[brochaKey]);
                 }
               }

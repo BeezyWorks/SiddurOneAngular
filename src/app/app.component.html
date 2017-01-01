@@ -1,5 +1,8 @@
-<header></header>
-<div class="content">
-  <router-outlet class="content"></router-outlet>
+<div>
+    <sticky [sticky-parent]="false" [sticky-width]="'100%'" [sticky-start]="150" [sticky-offset-top]="-200">
+      <header></header>
+    </sticky>
+  <div class="content">
+    <router-outlet class="content"></router-outlet>
+  </div>
 </div>
-<!-- <root-node *ngFor="let tefila of tefilot" [name]="tefila"></root-node> -->

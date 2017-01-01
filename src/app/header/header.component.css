@@ -23,6 +23,29 @@ background-color:#2196F3 ;
   color: white;
 }
 
+.login-area{
+  float: right;
+  padding: 16px;
+  margin-top: -90px;
+  line-height: 80%;
+  cursor: pointer;
+}
+
+.user-email{
+  color: white;
+  font-size: 75%;
+  text-align: right;
+  font-family: 'lato';
+}
+.login-button{
+  color: white;
+  background: #1565C0;
+}
+
+.login-area:hover{
+  background-color:#0288D1;
+}
+
 .date-title{
   color: white;
   padding-right: 16px;

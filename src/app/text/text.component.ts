@@ -38,7 +38,7 @@ export class TextComponent implements OnInit {
       .subscribe(snapshots => {
         snapshots.forEach(snapshot => {
           if (snapshot.key.includes(this.userPrefs.userNusach.key)) {
-            for (var raw of snapshot.val()) {
+            for (let raw of snapshot.val()) {
               this.evaluateRawObject(raw);
             }
           }
@@ -49,15 +49,15 @@ export class TextComponent implements OnInit {
   }
 
   evaluateRawObject(raw: any) {
-    var text = raw['text'];
-    var ref = raw['ref'];
+    let text = raw['text'];
+    let ref = raw['ref'];
 
     if (raw == "linebreak" || text == "linebreak") {
       text = "<br>";
     }
 
-    var andEval = this.evaluateBoolFlags(raw['and'], true);
-    var orEval = this.evaluateBoolFlags(raw['or'], false);
+    let andEval = this.evaluateBoolFlags(raw['and'], true);
+    let orEval = this.evaluateBoolFlags(raw['or'], false);
     if (andEval && orEval) {
       this.html += this.textToHtml(text, raw['flags']);
       if (ref != undefined) {
@@ -68,9 +68,9 @@ export class TextComponent implements OnInit {
   //takes a list of string keys and assess true or false
   evaluateBoolFlags(flags: string[], andEvaluation: boolean): boolean {
     if (flags == undefined) return true;
-    for (var key of flags) {
-      var shouldShow = false;
-      var notCondition = key.includes('!');
+    for (let key of flags) {
+      let shouldShow = false;
+      let notCondition = key.includes('!');
       //remove the '!' so the keys matchup
       key = key.replace('!', '');
       if (this.userPrefs.hasOwnProperty(key)) {
@@ -95,11 +95,11 @@ export class TextComponent implements OnInit {
 
   textToHtml(text: string, flags: any[]): string{
     if (text == undefined) return "";
-    var prefixes = "";
-    var suffixes = " ";
+    let prefixes = "";
+    let suffixes = " ";
     if (flags != undefined) {
-      for (var flag of flags) {
-        for (var check of this.checks) {
+      for (let flag of flags) {
+        for (let check of this.checks) {
           if (flag == check.key) {
             prefixes += check.openingTag;
             suffixes += check.closingTag;
