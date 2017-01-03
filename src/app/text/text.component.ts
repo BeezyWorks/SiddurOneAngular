@@ -34,11 +34,11 @@ export class TextComponent implements OnInit {
   }
 
   getObjectFromFirebase(path: string) {
-    this.af.database.list(path, { preserveSnapshot: true })
+    this.af.database.list('public/'+path)
       .subscribe(snapshots => {
         snapshots.forEach(snapshot => {
-          if (snapshot.key.includes(this.userPrefs.userNusach.key)) {
-            for (let raw of snapshot.val()) {
+          if (snapshot.$key.includes(this.userPrefs.userNusach.key)) {
+            for (let raw of snapshot) {
               this.evaluateRawObject(raw);
             }
           }

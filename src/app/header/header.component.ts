@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   }
 
   nusachPicked(selected) {
-    this.userPrefs.userNusach = selected;
+    this.userPrefs.setUserNusach(selected);
   }
 
   login() {

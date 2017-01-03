@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AngularFire, FirebaseObjectObservable} from 'angularfire2';
-import {HebrewDateService} from '../hebrew-date.service';
-import {UserPrefsService} from '../user-prefs.service';
+import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { HebrewDateService } from '../hebrew-date.service';
+import { UserPrefsService } from '../user-prefs.service';
 
 @Component({
   selector: 'siddur',
@@ -15,16 +15,25 @@ export class SiddurComponent implements OnInit {
   sections: Section[] = [];
 
   constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
-    this.getTopLevel('tefilot/');
-    this.getTopLevel('brochos/');
+    userPrefs.$userNusach.subscribe((nusach) => {
+      console.log(nusach);
+      this.getTopLevel('public/tefilot/');
+      this.getTopLevel('public/brochos/');
+    })
   }
 
   getTopLevel(topLevel: string) {
     //get all tefilot in the tefila node of the db
-    this.af.database.list(topLevel, { preserveSnapshot: true })
+    this.af.database.list(topLevel)
       .subscribe(snapshots => {
-        snapshots.forEach(fetched => {
-          let array = fetched.val();
+        if (topLevel.includes('tefilot')) {
+          this.tefilot.length = 0;
+        }
+        if (topLevel.includes('brochos')) {
+          this.brochos.length = 0;
+        }
+        snapshots.forEach(array => {
+
           for (let node in array) {
             let tefila = new Tefila();
             let includedInNusach = false;
@@ -60,20 +69,20 @@ export class SiddurComponent implements OnInit {
 
   tefilaSelected(tefila) {
     this.sections.length = 0;
-
-    for (let section of tefila.sectionRoutes) {
-      this.af.database.list('sections/' + section, { preserveSnapshot: true })
+    for (let route of tefila.sectionRoutes) {
+      let section = new Section();
+      this.af.database.list('public/sections/' + route)
         .subscribe(snapshots => {
-          let section = new Section();
           snapshots.forEach(snapshot => {
+
             //get title of section and add it
-            if (snapshot.key == 'title') {
-              section.name = snapshot.val();
+            if (snapshot.$key == 'title') {
+              section.name = snapshot.$value;
             }
 
             //get our nusach's version of this section
-            if (snapshot.key.includes(this.userPrefs.userNusach.key)) {
-              for (let brocha of snapshot.val()) {
+            if (snapshot.$key.includes(this.userPrefs.userNusach.key)) {
+              for (let brocha of snapshot) {
                 for (let brochaKey in brocha) {
                   let route = brochaKey + '/' + brocha[brochaKey];
                   section.brochaRoutes.push(brochaKey + '/' + brocha[brochaKey]);
@@ -82,6 +91,7 @@ export class SiddurComponent implements OnInit {
             }
           })
           this.sections.push(section);
+          console.log(this.sections);
         });
     }
   }

@@ -2,11 +2,11 @@
   <p class="title">Siddur One</p>
 
   <button class="nusach-button" md-button [mdMenuTriggerFor]="menu">
-{{userPrefs.userNusach.hebrewTitle}}
+{{(userPrefs.$userNusach | async)?.hebrewTitle}}
 </button>
 
   <md-menu x-position="before" #menu="mdMenu">
-    <div *ngFor="let nusach of userPrefs.nuschos">
+    <div *ngFor="let nusach of (userPrefs.$nuschos | async)">
       <button md-menu-item (click)="nusachPicked(nusach)"> {{nusach.hebrewTitle}}</button>
     </div>
   </md-menu>
