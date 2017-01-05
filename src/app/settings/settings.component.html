@@ -1,0 +1,42 @@
+<div [fxLayout]="direction">
+  <!-- spacer -->
+  <div fxFlex="20"></div>
+
+  <!-- Main Content -->
+  <div fxFlex="60">
+    <md-card>
+      <md-card-subtitle>Special holiday schedules</md-card-subtitle>
+      <md-card-title>Calendar Settings</md-card-title>
+    
+      <md-slide-toggle [(ngModel)]="userPrefs.inIsrael" (change)=" inIsraelToggled($event)" color="accent">
+        In Israel
+      </md-slide-toggle>
+
+      <md-slide-toggle [(ngModel)]="userPrefs.inJerusalem" (change)=" inJerusalemToggled($event)" color="accent">
+        Shushan Purim (In Jerusalem)
+      </md-slide-toggle>
+
+      <md-slide-toggle [(ngModel)]="userPrefs.modernHolidays" (change)=" modernHolidaysToggled($event)" color="accent">
+        Modern Holidays
+      </md-slide-toggle>
+    </md-card>
+
+    <div class="spacer"></div>
+
+    <md-card>
+      <md-card-subtitle>Pasuk to put at the end of the Amida</md-card-subtitle>
+      <md-card-title>Name Pasuk</md-card-title>
+      <md-input-container>
+        <input md-input type="text" mdInput placeholder="Pasuk" [(ngModel)]="namePasuk">
+      </md-input-container>
+      <md-card-actions align="end">
+        <button md-button (click)="saveNamePasuk()">Save</button>
+      </md-card-actions>
+    </md-card>
+
+ <div class="spacer"></div>
+  </div>
+
+  <!-- Spacer -->
+  <div fxFlex="20"></div>
+</div>

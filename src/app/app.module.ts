@@ -7,6 +7,7 @@ import { MaterialModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import {StickyModule} from 'ng2-sticky-kit/ng2-sticky-kit';
 import {Gravatar} from 'ng2-gravatar-directive';
+import { ResponsiveModule } from 'ng2-responsive';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -17,6 +18,7 @@ import { AboutComponent } from './about/about.component';
 import { SiddurComponent } from './siddur/siddur.component';
 import { TextComponent } from './text/text.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
+import { SettingsComponent } from './settings/settings.component';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBDpTCrfZknC0uYnTdeedD3NC4joV8gSus",
@@ -34,6 +36,7 @@ const firebaseAuthConfig = {
 const appRoutes: Routes = [
   { path: 'siddur', component: SiddurComponent },
   { path: 'about', component: AboutComponent },
+  {path: 'settings', component: SettingsComponent},
    { path: '',   redirectTo: '/siddur', pathMatch: 'full' },
 ];
 
@@ -46,7 +49,8 @@ const appRoutes: Routes = [
     SiddurComponent,
     TextComponent,
     SafeHtmlPipe,
-    Gravatar
+    Gravatar,
+    SettingsComponent
   ],
   imports: [
     MaterialModule.forRoot(),
@@ -56,9 +60,10 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
     FlexLayoutModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    StickyModule
+    StickyModule,
+    ResponsiveModule
   ],
-  providers: [],
+  providers: [UserPrefsService, HebrewDateService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

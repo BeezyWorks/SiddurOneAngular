@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   navTabs: NavTab[] = [
     { title: 'Siddur', routing: '/siddur' },
     { title: 'Zemanim', routing: '/siddur' },
-    { title: 'Settings', routing: '/siddur' },
+    { title: 'Settings', routing: '/settings' },
     { title: 'About', routing: '/about' }
   ];
 
@@ -30,7 +30,10 @@ export class HeaderComponent implements OnInit {
   }
 
   login() {
-    this.af.auth.login();
+    this.af.auth.login().then((auth)=>{
+      this.userPrefs.user = auth;
+      this.userPrefs.loggedInUser();
+    });
   }
 
   logout(){

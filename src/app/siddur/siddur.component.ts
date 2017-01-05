@@ -7,7 +7,7 @@ import { UserPrefsService } from '../user-prefs.service';
   selector: 'siddur',
   templateUrl: './siddur.component.html',
   styleUrls: ['./siddur.component.css'],
-  providers: [HebrewDateService, UserPrefsService]
+  providers: []
 })
 export class SiddurComponent implements OnInit {
   tefilot: Tefila[] = [];
