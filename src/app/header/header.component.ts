@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   dateTitle: string;
   navTabs: NavTab[] = [
     { title: 'Siddur', routing: '/siddur' },
-    { title: 'Zemanim', routing: '/siddur' },
+    { title: 'Zemanim', routing: '/zemanim' },
     { title: 'Settings', routing: '/settings' },
     { title: 'About', routing: '/about' }
   ];

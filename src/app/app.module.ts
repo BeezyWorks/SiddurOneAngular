@@ -19,6 +19,7 @@ import { SiddurComponent } from './siddur/siddur.component';
 import { TextComponent } from './text/text.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { SettingsComponent } from './settings/settings.component';
+import { ZemanimComponent } from './zemanim/zemanim.component';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBDpTCrfZknC0uYnTdeedD3NC4joV8gSus",
@@ -37,6 +38,7 @@ const appRoutes: Routes = [
   { path: 'siddur', component: SiddurComponent },
   { path: 'about', component: AboutComponent },
   {path: 'settings', component: SettingsComponent},
+  {path: 'zemanim', component: ZemanimComponent},
    { path: '',   redirectTo: '/siddur', pathMatch: 'full' },
 ];
 
@@ -50,7 +52,8 @@ const appRoutes: Routes = [
     TextComponent,
     SafeHtmlPipe,
     Gravatar,
-    SettingsComponent
+    SettingsComponent,
+    ZemanimComponent
   ],
   imports: [
     MaterialModule.forRoot(),

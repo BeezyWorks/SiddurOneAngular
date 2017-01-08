@@ -1,0 +1,32 @@
+<div [fxLayout]="direction">
+  <!-- spacer -->
+  <div fxFlex="20"></div>
+
+  <!-- Main Content -->
+  <div fxFlex="60">
+
+    <md-card>
+      <md-card-subtitle>{{hebrewDate.formattedDate}}</md-card-subtitle>
+      <md-card-title>לוח היום</md-card-title>
+    </md-card>
+
+    <div style="height: 16px;"></div>
+
+<md-card>
+  <md-card-subtitle>{{dateFormatted}}</md-card-subtitle>
+  <md-card-title>זמני היום</md-card-title>
+  <md-list>
+    <md-list-item *ngFor="let zman of zmanim">
+      <h3 md-line> {{zman.name}} </h3>
+      <p md-line>
+        <span> {{zman.time | date:'shortTime'}} </span>
+      </p>
+    </md-list-item>
+  </md-list>
+</md-card>
+<div style="height: 16px;"></div>
+</div>
+
+<!-- Spacer -->
+<div fxFlex="20"></div>
+</div>
