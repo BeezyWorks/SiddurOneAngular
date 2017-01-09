@@ -30,7 +30,7 @@
       <md-card-content>
         <div *ngFor="let section of sections">
           <h3 class="section-title"> {{section.name}} </h3>
-          <div *ngFor="let path of section.brochaRoutes">
+          <div *ngFor="let path of section.subRoutes">
             <app-text [brochaPath]="path"></app-text>
           </div>
           <md-divider></md-divider>

@@ -16,6 +16,7 @@ height: 100%;
   padding-left: 16px;
   padding-right: 16px;
   height: 100%;
+  min-height: 100vh;
 }
 
 html, body, md-sidenav-container, .content  {

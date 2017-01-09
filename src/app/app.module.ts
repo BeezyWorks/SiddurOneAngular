@@ -20,6 +20,7 @@ import { TextComponent } from './text/text.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { SettingsComponent } from './settings/settings.component';
 import { ZemanimComponent } from './zemanim/zemanim.component';
+import { ParseTextPipe } from './parse-text.pipe';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBDpTCrfZknC0uYnTdeedD3NC4joV8gSus",
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
     SafeHtmlPipe,
     Gravatar,
     SettingsComponent,
-    ZemanimComponent
+    ZemanimComponent,
+    ParseTextPipe
   ],
   imports: [
     MaterialModule.forRoot(),

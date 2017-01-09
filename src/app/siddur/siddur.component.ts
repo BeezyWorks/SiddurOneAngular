@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { HebrewDateService } from '../hebrew-date.service';
 import { UserPrefsService } from '../user-prefs.service';
+import {Tefila} from '../models/tefila.model';
 
 @Component({
   selector: 'siddur',
@@ -12,11 +13,10 @@ import { UserPrefsService } from '../user-prefs.service';
 export class SiddurComponent implements OnInit {
   tefilot: Tefila[] = [];
   brochos: Tefila[] = [];
-  sections: Section[] = [];
+  sections: Tefila[] = [];
 
   constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
     userPrefs.$userNusach.subscribe((nusach) => {
-      console.log(nusach);
       this.getTopLevel('public/tefilot/');
       this.getTopLevel('public/brochos/');
     })
@@ -44,7 +44,7 @@ export class SiddurComponent implements OnInit {
               if (key.includes(this.userPrefs.userNusach.key)) {
                 // add a section ref for each section in the array
                 for (let sectionRef of array[node][key]) {
-                  tefila.sectionRoutes.push(sectionRef['section']);
+                  tefila.subRoutes.push(sectionRef['section']);
                 }
                 includedInNusach = true;
               }
@@ -67,10 +67,10 @@ export class SiddurComponent implements OnInit {
   ngOnInit() {
   }
 
-  tefilaSelected(tefila) {
-    this.sections.length = 0;
-    for (let route of tefila.sectionRoutes) {
-      let section = new Section();
+  tefilaSelected(tefila: Tefila) {
+    this.sections = [];
+    for (let route of tefila.subRoutes) {
+      let section = new Tefila();
       this.af.database.list('public/sections/' + route)
         .subscribe(snapshots => {
           snapshots.forEach(snapshot => {
@@ -85,25 +85,15 @@ export class SiddurComponent implements OnInit {
               for (let brocha of snapshot) {
                 for (let brochaKey in brocha) {
                   let route = brochaKey + '/' + brocha[brochaKey];
-                  section.brochaRoutes.push(brochaKey + '/' + brocha[brochaKey]);
+                  section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
                 }
               }
             }
           })
           this.sections.push(section);
-          console.log(this.sections);
         });
     }
   }
 
 }
 
-export class Tefila {
-  name: string;
-  sectionRoutes: string[] = [];
-}
-
-export class Section {
-  name: string;
-  brochaRoutes: string[] = [];
-}

@@ -3,6 +3,8 @@ import * as Hebcal from 'hebcal';
 
 @Injectable()
 export class HebrewDateService {
+    hDate: any;
+
     formattedDate: string;
     isTachanun: boolean;
     shabbos: boolean;
@@ -23,11 +25,11 @@ export class HebrewDateService {
     chatzos_halaila: Date;
 
     constructor() {
-        let hDate = new Hebcal.HDate();
-        
+        this.hDate = new Hebcal.HDate();
+
         window.navigator.geolocation.getCurrentPosition((position => {
-            hDate.setLocation(position.coords.latitude, position.coords.longitude);
-            let zemanim = hDate.getZemanim();
+            this.hDate.setLocation(position.coords.latitude, position.coords.longitude);
+            let zemanim = this.hDate.getZemanim();
             this.alos = zemanim['alot_hashachar'];
             this.mishyakir = zemanim['misheyakir'];
             this.neitz = zemanim['neitz_hachama'];
@@ -39,16 +41,20 @@ export class HebrewDateService {
             this.tzais = zemanim['tzeit'];
             this.chatzos_halaila = zemanim['chatzot_night'];
         }));
-        console.log(hDate['long']);
+
+        this.initHDate();
 
 
 
+    }
 
-        this.formattedDate = hDate.toString('h');
-        this.isTachanun = hDate.tachanun() != 0;
-        this.shabbos = hDate.getDay() == 6;
+    initHDate() {
 
-        var holidaysArray = hDate.holidays();
+        this.formattedDate = this.hDate.toString('h');
+        this.isTachanun = this.hDate.tachanun() != 0;
+        this.shabbos = this.hDate.getDay() == 6;
+
+        var holidaysArray = this.hDate.holidays();
         for (var holiday of holidaysArray) {
             var englishName = holiday.getDesc('a');
 
@@ -56,7 +62,6 @@ export class HebrewDateService {
                 this.chanuka = true;
             }
         }
-
     }
 
 }

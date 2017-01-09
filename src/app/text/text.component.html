@@ -1,2 +1,3 @@
-<p class = "content-text" [innerHTML]="html | safeHtml">
+<p class="content-text" [innerHTML]="html | safeHtml">
+    {{something| async |json| parseText}}
 </p>

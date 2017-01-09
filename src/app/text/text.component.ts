@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { Component,  Input } from '@angular/core';
+import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 import { HebrewDateService } from '../hebrew-date.service';
 import { UserPrefsService } from '../user-prefs.service';
 
@@ -11,7 +11,9 @@ import { UserPrefsService } from '../user-prefs.service';
 
 
 
-export class TextComponent implements OnInit {
+export class TextComponent  {
+something: FirebaseListObservable<any>;
+
   checks: TextFlags[] = [
     { key: 'bold', openingTag: '<strong>', closingTag: '</strong>' },
     { key: 'special_color', openingTag: '<span style="color:green">', closingTag: '</span>' },
@@ -24,8 +26,7 @@ export class TextComponent implements OnInit {
 
   constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) { }
 
-  ngOnInit() {
-  }
+ 
 
   @Input()
   set brochaPath(path: string) {
@@ -34,6 +35,7 @@ export class TextComponent implements OnInit {
   }
 
   getObjectFromFirebase(path: string) {
+    this.something = this.af.database.list('public/'+path);
     this.af.database.list('public/'+path)
       .subscribe(snapshots => {
         snapshots.forEach(snapshot => {
