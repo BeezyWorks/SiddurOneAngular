@@ -1,3 +1,11 @@
-<p class="content-text" [innerHTML]="html | safeHtml">
-    {{something| async |json| parseText}}
-</p>
+<md-card>
+    <md-card-content>
+        <div *ngFor="let section of sections">
+            <h3 class="section-title"> {{section.name}} </h3>
+            <div class="content-text" *ngFor="let path of section?.firebaseRefs">
+                <p [innerHtml]="path | async | parseText | safeHtml"></p>
+            </div>
+            <md-divider></md-divider>
+        </div>
+    </md-card-content>
+</md-card>

@@ -25,20 +25,7 @@
 
   <!-- Main Content -->
   <div fxFlex="60" class="center-card">
-
-    <md-card>
-      <md-card-content>
-        <div *ngFor="let section of sections">
-          <h3 class="section-title"> {{section.name}} </h3>
-          <div *ngFor="let path of section.subRoutes">
-            <app-text [brochaPath]="path"></app-text>
-          </div>
-          <md-divider></md-divider>
-        </div>
-      </md-card-content>
-    </md-card>
-
-
+    <app-text [tefila]="selectedTefila"></app-text>
   </div>
 
   <!-- spacer -->
@@ -60,7 +47,7 @@
 </div>
 
 <!--mobile layout-->
-<md-sidenav-container *showItSizes="{max:749}" class="content">
+<md-sidenav-container  *showItSizes="{max:749}" class="content">
   <md-sidenav class="sidenav-mobile" #start (open)="closeStartButton.focus()">
     <md-list>
       <h3 md-subheader>תפילות</h3>
@@ -79,21 +66,10 @@
     End Sidenav.
     <button md-button (click)="end.close()">Close</button>
   </md-sidenav>
-    <div class="subheader-mobile">
-
-      <button md-icon-button (click)="start.open()"> <md-icon color="accent">menu</md-icon></button>
-    </div>
-
-    <md-card class="content-frame-mobile">
-      <md-card-content>
-        <div *ngFor="let section of sections">
-          <h3 class="section-title"> {{section.name}} </h3>
-          <div *ngFor="let path of section.brochaRoutes">
-            <app-text [brochaPath]="path"></app-text>
-          </div>
-          <md-divider></md-divider>
-        </div>
-      </md-card-content>
-    </md-card>
-
+  <div class="subheader-mobile">
+    <button md-icon-button (click)="start.open()"> <md-icon color="accent">menu</md-icon></button>
+  </div>
+<div  class="content-frame-mobile">
+  <app-text [tefila]="selectedTefila"></app-text>
+</div>
 </md-sidenav-container>

@@ -15,6 +15,8 @@ export class SiddurComponent implements OnInit {
   brochos: Tefila[] = [];
   sections: Tefila[] = [];
 
+  selectedTefila: Tefila;
+
   constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
     userPrefs.$userNusach.subscribe((nusach) => {
       this.getTopLevel('public/tefilot/');
@@ -68,7 +70,8 @@ export class SiddurComponent implements OnInit {
   }
 
   tefilaSelected(tefila: Tefila) {
-    this.sections = [];
+    this.selectedTefila = tefila;
+    console.log(this.sections);
     for (let route of tefila.subRoutes) {
       let section = new Tefila();
       this.af.database.list('public/sections/' + route)
@@ -86,6 +89,7 @@ export class SiddurComponent implements OnInit {
                 for (let brochaKey in brocha) {
                   let route = brochaKey + '/' + brocha[brochaKey];
                   section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
+                  section.firebaseRefs.push(this.af.database.list('public/'+brochaKey+'/'+brocha[brochaKey]))
                 }
               }
             }

@@ -1,3 +1,10 @@
 .special-color{
   color: green;
 }
+
+.section-title{
+  color: #2962FF;
+  text-align: right;
+  font-weight: bold;
+  font-size: 85%;
+}
