@@ -22,13 +22,14 @@ export class TextComponent implements OnChanges {
 
   ngOnChanges() {
     this.sections = [];
-    if(this.tefila==undefined) return;
+    if (this.tefila == undefined) return;
     for (let route of this.tefila.subRoutes) {
+      console.log(route);
       let section = new Tefila();
-      this.af.database.list('public/sections/' + route)
+      this.af.database.list('public/' + route)
         .subscribe(snapshots => {
           snapshots.forEach(snapshot => {
-
+            console.log(snapshot);
             //get title of section and add it
             if (snapshot.$key == 'title') {
               section.name = snapshot.$value;

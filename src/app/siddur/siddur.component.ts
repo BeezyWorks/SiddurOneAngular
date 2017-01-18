@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import { HebrewDateService } from '../hebrew-date.service';
 import { UserPrefsService } from '../user-prefs.service';
-import {Tefila} from '../models/tefila.model';
+import { Tefila } from '../models/tefila.model';
+import { Subject } from 'rxjs';
+import { TopLevel } from '../models/database.models';
 
 @Component({
   selector: 'siddur',
@@ -11,62 +13,41 @@ import {Tefila} from '../models/tefila.model';
   providers: []
 })
 export class SiddurComponent implements OnInit {
-  tefilot: Tefila[] = [];
-  brochos: Tefila[] = [];
   sections: Tefila[] = [];
 
   selectedTefila: Tefila;
 
+  nusachKey: string;
+
   constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
-    userPrefs.$userNusach.subscribe((nusach) => {
-      this.getTopLevel('public/tefilot/');
-      this.getTopLevel('public/brochos/');
-    })
-  }
-
-  getTopLevel(topLevel: string) {
-    //get all tefilot in the tefila node of the db
-    this.af.database.list(topLevel)
-      .subscribe(snapshots => {
-        if (topLevel.includes('tefilot')) {
-          this.tefilot.length = 0;
-        }
-        if (topLevel.includes('brochos')) {
-          this.brochos.length = 0;
-        }
-        snapshots.forEach(array => {
-
-          for (let node in array) {
-            let tefila = new Tefila();
-            let includedInNusach = false;
-            tefila.name = array[node]['title'];
-
-            //check that the tefila has at least one section for our nusach
-            for (let key in array[node]) {
-              if (key.includes(this.userPrefs.userNusach.key)) {
-                // add a section ref for each section in the array
-                for (let sectionRef of array[node][key]) {
-                  tefila.subRoutes.push(sectionRef['section']);
-                }
-                includedInNusach = true;
-              }
-            }
-
-            //if it has at leas one section, push it to the array
-            if (includedInNusach) {
-              if (topLevel.includes('tefilot')) {
-                this.tefilot.push(tefila);
-              }
-              if (topLevel.includes('brochos')) {
-                this.brochos.push(tefila);
-              }
-            }
-          }
-        });
-      })
   }
 
   ngOnInit() {
+    this.userPrefs.$userNusach.subscribe((nusach) => {
+      this.nusachKey = nusach.key;
+    });
+  }
+
+  selectTefila(tefilaKey: string) {
+    let key = 'public/' + tefilaKey;
+    let arrayAwait = this.af.database.object(key).map(tefila => {
+      for (let key in tefila) {
+        if (key.includes(this.nusachKey)) {
+          return tefila[key];
+        }
+      }
+    });
+
+    arrayAwait.subscribe(array => {
+      console.log(array);
+      let tefila = new Tefila();
+      for (let object of array) {
+        for (let key in object) {
+          tefila.subRoutes.push(key + '/' + object[key]);
+        }
+      }
+      this.selectedTefila = tefila;
+    })
   }
 
   tefilaSelected(tefila: Tefila) {
@@ -74,6 +55,13 @@ export class SiddurComponent implements OnInit {
     console.log(this.sections);
     for (let route of tefila.subRoutes) {
       let section = new Tefila();
+      this.af.database.list('public/sections/',
+        {
+          query: {
+
+          }
+
+        })
       this.af.database.list('public/sections/' + route)
         .subscribe(snapshots => {
           snapshots.forEach(snapshot => {
@@ -89,7 +77,7 @@ export class SiddurComponent implements OnInit {
                 for (let brochaKey in brocha) {
                   let route = brochaKey + '/' + brocha[brochaKey];
                   section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
-                  section.firebaseRefs.push(this.af.database.list('public/'+brochaKey+'/'+brocha[brochaKey]))
+                  section.firebaseRefs.push(this.af.database.list('public/' + brochaKey + '/' + brocha[brochaKey]))
                 }
               }
             }

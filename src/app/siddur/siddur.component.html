@@ -4,20 +4,8 @@
   <div fxFlex="3"></div>
 
   <!-- Top level navigation -->
-  <div class="tefila-list-header" fxFlex="20">
-    <md-card>
-      <md-list>
-        <h3 md-subheader>תפילות</h3>
-        <md-list-item *ngFor="let tefila of tefilot">
-          <h3 md-line (click)="tefilaSelected(tefila)">{{tefila.name}}</h3>
-        </md-list-item>
-        <md-divider></md-divider>
-        <h3 md-subheader>ברכות</h3>
-        <md-list-item *ngFor="let brocha of brochos">
-          <h3 md-line (click)="tefilaSelected(brocha)">{{brocha.name}}</h3>
-        </md-list-item>
-      </md-list>
-    </md-card>
+  <div  fxFlex="20">
+    <siddur-navigation [nusach]="nusachKey" (tefilaSelected)="selectTefila($event)"></siddur-navigation>
   </div>
 
   <!-- spacer -->

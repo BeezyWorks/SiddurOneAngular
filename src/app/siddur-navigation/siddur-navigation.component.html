@@ -1,0 +1,9 @@
+<md-card>
+  <md-list class="tefila-list-header" *ngFor="let nav of topLevels">
+    <h3 md-subheader>{{nav.title}}</h3>
+    <md-list-item *ngFor="let sub of nav.subRefs">
+      <h3 md-line (click)="selectTefila(sub.key, nav.key)">{{sub.title}}</h3>
+    </md-list-item>
+    <md-divider></md-divider>
+  </md-list>
+</md-card>
