@@ -21,8 +21,7 @@ export class ParseTextPipe implements PipeTransform {
 
   transform(brochaArray: any, args?: any): any {
     let html = "";
-    console.log(brochaArray);
-    if(brochaArray==undefined) return;
+    if(brochaArray==undefined) return "";
     for (let raw of brochaArray[0]) {
       let text = raw['text'];
       let ref = raw['ref'];

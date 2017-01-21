@@ -1,0 +1,12 @@
+<div *ngFor="let textElement of firebaseRaw; let i = index">
+  <h3>Text</h3>
+  <textarea md-textarea [(ngModel)]="textElement.text"></textarea>
+  <h3 (click)="showOptons(textElement)">Options</h3>
+  <div *ngIf="showOptionsElement == textElement">
+    <md-checkbox *ngFor="let flag of flags" [checked]="containsFlag(flag)" (change)=" toggleFlag(flag, $event.checked)">
+      {{flag}}
+    </md-checkbox>
+  </div>
+  <button (click)="addElement(i)">Add</button>
+</div>
+<button md-button (click)="save()">Save Changes</button>

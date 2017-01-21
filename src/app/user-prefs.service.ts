@@ -27,6 +27,8 @@ export class UserPrefsService {
   modernHolidaysKey: string = "modernHolidays";
   modernHolidays: boolean = true;
 
+  isAdmin: boolean;
+
   constructor(private af: AngularFire) {
     this.namePasuk = localStorage.getItem(this.pasukNameKey);
     this.af.auth.subscribe((user) => {
@@ -40,6 +42,14 @@ export class UserPrefsService {
         localStorage.setItem(this.inIsraelKey, userOptions[this.inIsraelKey]);
         localStorage.setItem(this.inJerusalemKey, userOptions[this.inJerusalemKey]);
         localStorage.setItem(this.modernHolidaysKey, userOptions[this.modernHolidaysKey]);
+
+        af.database.list('admins/').subscribe(admins => {
+          admins.forEach(admin => {
+            if (user.uid == admin.$value)
+              this.isAdmin = true;
+              console.log(this.isAdmin)
+          })
+        })
       })
     });
 
@@ -63,7 +73,7 @@ export class UserPrefsService {
 
     this.inIsrael = localStorage.getItem(this.inIsraelKey) == 'true';
     this.inJerusalem = localStorage.getItem(this.inJerusalemKey) == 'true';
-    this.modernHolidays = localStorage.getItem(this.modernHolidaysKey) !='false';
+    this.modernHolidays = localStorage.getItem(this.modernHolidaysKey) != 'false';
   }
 
   loggedInUser(keepLocalValues: boolean = false) {

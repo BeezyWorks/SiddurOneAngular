@@ -39,7 +39,6 @@ export class SiddurComponent implements OnInit {
     });
 
     arrayAwait.subscribe(array => {
-      console.log(array);
       let tefila = new Tefila();
       for (let object of array) {
         for (let key in object) {
@@ -52,7 +51,6 @@ export class SiddurComponent implements OnInit {
 
   tefilaSelected(tefila: Tefila) {
     this.selectedTefila = tefila;
-    console.log(this.sections);
     for (let route of tefila.subRoutes) {
       let section = new Tefila();
       this.af.database.list('public/sections/',

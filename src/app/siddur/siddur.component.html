@@ -36,26 +36,12 @@
 
 <!--mobile layout-->
 <md-sidenav-container  *showItSizes="{max:749}" class="content">
-  <md-sidenav class="sidenav-mobile" #start (open)="closeStartButton.focus()">
-    <md-list>
-      <h3 md-subheader>תפילות</h3>
-      <md-list-item *ngFor="let tefila of tefilot">
-        <h3 md-line (click)="tefilaSelected(tefila)">{{tefila.name}}</h3>
-      </md-list-item>
-      <md-divider></md-divider>
-      <h3 md-subheader>ברכות</h3>
-      <md-list-item *ngFor="let brocha of brochos">
-        <h3 md-line (click)="tefilaSelected(brocha)">{{brocha.name}}</h3>
-      </md-list-item>
-    </md-list>
-    <button md-button #closeStartButton (click)="start.close()">Close</button>
+  <md-sidenav class="sidenav-mobile" #start >
+       <siddur-navigation [nusach]="nusachKey" (tefilaSelected)="selectTefila($event)"></siddur-navigation>
   </md-sidenav>
-  <md-sidenav #end align="end">
-    End Sidenav.
-    <button md-button (click)="end.close()">Close</button>
-  </md-sidenav>
+
   <div class="subheader-mobile">
-    <button md-icon-button (click)="start.open()"> <md-icon color="accent">menu</md-icon></button>
+    <button md-icon-button (click)="start.open()"> <md-icon>menu</md-icon></button>
   </div>
 <div  class="content-frame-mobile">
   <app-text [tefila]="selectedTefila"></app-text>

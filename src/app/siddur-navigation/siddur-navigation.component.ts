@@ -7,19 +7,20 @@ import { TopLevel } from '../models/database.models';
   templateUrl: './siddur-navigation.component.html',
   styleUrls: ['./siddur-navigation.component.css']
 })
-export class SiddurNavigationComponent implements OnChanges {
+export class SiddurNavigationComponent {
 
   constructor(private af: AngularFire) { }
 
-  @Input() nusach: string;
+
   @Output() tefilaSelected = new EventEmitter<string>();
   topLevels: NavRef[] = [];
 
-  selectTefila(tefilaKey: string, parentKey: string){
-    this.tefilaSelected.emit(parentKey+'/'+tefilaKey);
+  selectTefila(tefilaKey: string, parentKey: string) {
+    this.tefilaSelected.emit(parentKey + '/' + tefilaKey);
   }
-
-  ngOnChanges() {
+  
+  @Input() set nusach(nusach: string) {
+    this.topLevels.length = 0;
     this.af.database.list('public/top-level').subscribe((obj) => {
       obj.forEach((topLevel) => {
         let level = topLevel as TopLevel;
@@ -33,7 +34,7 @@ export class SiddurNavigationComponent implements OnChanges {
             tefila.title = tefilaItem['title'];
             tefila.key = tefilaItem.$key
             for (let key in tefilaItem) {
-              if (key.includes(this.nusach)) {
+              if (key.includes(nusach)) {
                 includedInNusach = true;
               }
             }

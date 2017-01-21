@@ -3,7 +3,8 @@
         <div *ngFor="let section of sections">
             <h3 class="section-title"> {{section.name}} </h3>
             <div class="content-text" *ngFor="let path of section?.firebaseRefs">
-                <p [innerHtml]="path | async | parseText | safeHtml"></p>
+                <p (click)="textClicked(path)" [innerHtml]="path | async | parseText | safeHtml"></p>
+                <edit-text *ngIf="inEdit==path" [ref]="path"></edit-text>
             </div>
             <md-divider></md-divider>
         </div>

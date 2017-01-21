@@ -14,22 +14,20 @@ import { Subject } from 'rxjs';
 
 
 export class TextComponent implements OnChanges {
-  sections: Tefila[];
+  sections: Tefila[] = [];
   @Input() tefila: Tefila;
-
+  inEdit : FirebaseListObservable<any>;
 
   constructor(private af: AngularFire, private userPrefs: UserPrefsService) { }
 
   ngOnChanges() {
-    this.sections = [];
     if (this.tefila == undefined) return;
     for (let route of this.tefila.subRoutes) {
-      console.log(route);
-      let section = new Tefila();
-      this.af.database.list('public/' + route)
-        .subscribe(snapshots => {
+      let sectionObservable = this.af.database.list('public/' + route)
+        .map(snapshots => {
+      this.sections.length = 0;
+          let section = new Tefila();
           snapshots.forEach(snapshot => {
-            console.log(snapshot);
             //get title of section and add it
             if (snapshot.$key == 'title') {
               section.name = snapshot.$value;
@@ -46,8 +44,17 @@ export class TextComponent implements OnChanges {
               }
             }
           })
-          this.sections.push(section);
+
+          return section;
         });
+      sectionObservable.subscribe(section => {
+        this.sections.push(section);
+      })
     }
+  }
+
+  textClicked(ref: FirebaseListObservable<any>) {
+    this.inEdit=ref;
+    ref.subscribe(val=>{})
   }
 }
