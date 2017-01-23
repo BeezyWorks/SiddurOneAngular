@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
 import * as Hebcal from 'hebcal';
 
 @Injectable()
 export class HebrewDateService {
+    $evaluationKeys: FirebaseObjectObservable<any>;
     hDate: any;
 
     formattedDate: string;
@@ -24,7 +26,9 @@ export class HebrewDateService {
     tzais_rt: Date;
     chatzos_halaila: Date;
 
-    constructor() {
+    constructor(private af: AngularFire) {
+        this.$evaluationKeys = af.database.object('public/evaluations/calendar');
+
         this.hDate = new Hebcal.HDate();
 
         window.navigator.geolocation.getCurrentPosition((position => {

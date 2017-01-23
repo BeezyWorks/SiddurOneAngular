@@ -1,0 +1,26 @@
+.edit-area{
+    border: #2196F3;
+    border-width: 1px;
+    border-style: solid;
+    padding: 16px;
+    margin: 8px;
+}
+
+.edit-area h2{
+    font-size: 14px;
+    color: #0D47A1;
+}
+
+.edit-area h3 {
+    cursor: pointer;
+    font-size: 14px;
+    color: #FFC107;
+}
+
+.eval-title{
+    margin-top: 4px;
+    margin-bottom: 2px;
+    font-weight: bolder;
+    color: #FFC107;
+    font-size: 11px;
+}

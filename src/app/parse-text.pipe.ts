@@ -23,6 +23,7 @@ export class ParseTextPipe implements PipeTransform {
     let html = "";
     if(brochaArray==undefined) return "";
     for (let raw of brochaArray[0]) {
+      if(raw==undefined) continue;
       let text = raw['text'];
       let ref = raw['ref'];
 

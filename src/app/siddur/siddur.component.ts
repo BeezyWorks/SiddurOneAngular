@@ -53,13 +53,7 @@ export class SiddurComponent implements OnInit {
     this.selectedTefila = tefila;
     for (let route of tefila.subRoutes) {
       let section = new Tefila();
-      this.af.database.list('public/sections/',
-        {
-          query: {
-
-          }
-
-        })
+      this.af.database.list('public/sections/')
       this.af.database.list('public/sections/' + route)
         .subscribe(snapshots => {
           snapshots.forEach(snapshot => {

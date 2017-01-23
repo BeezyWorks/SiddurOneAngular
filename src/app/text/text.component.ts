@@ -16,7 +16,7 @@ import { Subject } from 'rxjs';
 export class TextComponent implements OnChanges {
   sections: Tefila[] = [];
   @Input() tefila: Tefila;
-  inEdit : FirebaseListObservable<any>;
+  inEdit: FirebaseListObservable<any>;
 
   constructor(private af: AngularFire, private userPrefs: UserPrefsService) { }
 
@@ -25,7 +25,7 @@ export class TextComponent implements OnChanges {
     for (let route of this.tefila.subRoutes) {
       let sectionObservable = this.af.database.list('public/' + route)
         .map(snapshots => {
-      this.sections.length = 0;
+          this.sections.length = 0;
           let section = new Tefila();
           snapshots.forEach(snapshot => {
             //get title of section and add it
@@ -54,7 +54,10 @@ export class TextComponent implements OnChanges {
   }
 
   textClicked(ref: FirebaseListObservable<any>) {
-    this.inEdit=ref;
-    ref.subscribe(val=>{})
+    if (this.inEdit == ref)
+      this.inEdit = null;
+    else
+      this.inEdit = ref;
+
   }
 }

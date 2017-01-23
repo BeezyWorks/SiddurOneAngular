@@ -18,6 +18,8 @@ export class UserPrefsService {
   userNusach: Nusach = this.userNusachSource.getValue();
   namePasuk: string;
 
+  $evaluationKeys: FirebaseObjectObservable<any>;
+
   inIsrael: boolean;
   inIsraelKey: string = "inIsrael";
 
@@ -43,15 +45,15 @@ export class UserPrefsService {
         localStorage.setItem(this.inJerusalemKey, userOptions[this.inJerusalemKey]);
         localStorage.setItem(this.modernHolidaysKey, userOptions[this.modernHolidaysKey]);
 
-        af.database.list('admins/').subscribe(admins => {
-          admins.forEach(admin => {
-            if (user.uid == admin.$value)
-              this.isAdmin = true;
-              console.log(this.isAdmin)
-          })
+        af.database.object('admins/').subscribe(admins => {
+          let val = admins[user.uid];
+          if (val != undefined)
+            this.isAdmin = val[user.uid];
         })
       })
     });
+
+    this.$evaluationKeys = this.af.database.object('public/evaluations/preference');
 
     var savedNusachKey = localStorage.getItem(this.nusachKey);
     this.$nuschos.subscribe((array) => {

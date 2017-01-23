@@ -1,12 +1,50 @@
 <div *ngFor="let textElement of firebaseRaw; let i = index">
-  <h3>Text</h3>
-  <textarea md-textarea [(ngModel)]="textElement.text"></textarea>
-  <h3 (click)="showOptons(textElement)">Options</h3>
-  <div *ngIf="showOptionsElement == textElement">
-    <md-checkbox *ngFor="let flag of flags" [checked]="containsFlag(flag)" (change)=" toggleFlag(flag, $event.checked)">
-      {{flag}}
-    </md-checkbox>
+  <div class="edit-area">
+    <h2>Text</h2>
+    <textarea md-textarea [(ngModel)]="textElement.text"></textarea>
+    <h3 (click)="showOptons(textElement)">Options</h3>
+    <div *ngIf="showOptionsElement == textElement">
+      <div *ngFor="let flag of flags">
+        <md-checkbox [checked]="containsFlag(flag)" (change)=" toggleFlag(flag, $event.checked)">
+          {{flag}}
+        </md-checkbox>
+      </div>
+      <button *ngIf="!addingFlag" (click)="addFlag()" md-mini-fab>
+        <md-icon class="md-24">add</md-icon>
+      </button>
+      <div *ngIf="addingFlag">
+        <input [(ngModel)]="newFlag" />
+        <button (click)="saveNewFlag()">save</button>
+        <button (click)="addFlag()">cancel</button>
+      </div>
+    </div>
+    <h3 (click)="showEvaluations(textElement)">Evaluations</h3>
+    <md-radio-group *ngIf="showEvluationsElement==textElement" [(ngModel)]="textElement.evaluations.type">
+      <md-radio-button value="and">And</md-radio-button>
+      <md-radio-button value="or">Or</md-radio-button>
+    </md-radio-group>
+    <div *ngIf="showEvluationsElement==textElement">
+      <h4>Calendar Evals</h4>
+      <div *ngFor="let eval of calendarEvals">
+        <md-radio-group [(ngModel)]="textElement.evaluations[eval]" (change)="toggleEvaluation(textElement, eval, $event.value)">
+           <p class="eval-title"> {{eval}} </p>
+          <md-radio-button value=true>true</md-radio-button>
+          <md-radio-button value="false" [checked]="textElement.evaluations[eval]==false">false</md-radio-button>
+          <md-radio-button value=undefined [checked]="textElement.evaluations[eval]==undefined">ignore</md-radio-button>
+        </md-radio-group>
+      </div>
+      <h4>Preference Evals</h4>
+      <div *ngFor="let eval of preferenceEvals">
+        <md-radio-group [(ngModel)]="textElement.evaluations[eval]" [value]="textElement.evaluations[eval]" (change)="toggleEvaluation(textElement, eval, $event.value)">
+            <p class="eval-title"> {{eval}} </p>
+          <md-radio-button value="true" [checked]="textElement.evaluations[eval]==true">true</md-radio-button>
+          <md-radio-button value="false" [checked]="textElement.evaluations[eval]==false">false</md-radio-button>
+          <md-radio-button value="undefined" [checked]="textElement.evaluations[eval]==undefined">ignore</md-radio-button>
+        </md-radio-group>
+      </div>
+    </div>
+    <button md-raised-button color="warning" (click)="addElement(i)">Delete</button>
   </div>
-  <button (click)="addElement(i)">Add</button>
+  <button md-button (click)="addElement(i)">Add</button>
 </div>
-<button md-button (click)="save()">Save Changes</button>
+<button md-raised-button (click)="save()">Save Changes</button>
