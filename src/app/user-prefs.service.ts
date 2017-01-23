@@ -46,9 +46,12 @@ export class UserPrefsService {
         localStorage.setItem(this.modernHolidaysKey, userOptions[this.modernHolidaysKey]);
 
         af.database.object('admins/').subscribe(admins => {
-          let val = admins[user.uid];
+          console.log(admins);
+          console.log(this.user.uid);
+          let val = admins[this.user.uid];
           if (val != undefined)
-            this.isAdmin = val[user.uid];
+            this.isAdmin = val;
+          console.log(this.isAdmin);
         })
       })
     });
