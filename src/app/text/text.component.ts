@@ -54,6 +54,7 @@ export class TextComponent implements OnChanges {
   }
 
   textClicked(ref: FirebaseListObservable<any>) {
+    if(!this.userPrefs.isAdmin) return;
     if (this.inEdit == ref)
       this.inEdit = null;
     else
