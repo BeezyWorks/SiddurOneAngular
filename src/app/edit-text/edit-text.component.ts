@@ -68,7 +68,12 @@ export class EditTextComponent {
         delete this.firebaseRaw[key];
       }
     }
-    this.baseRef.update(this.firebaseKey, this.firebaseRaw);
+    this.baseRef.$ref.ref.child(this.firebaseKey).set(this.firebaseRaw);
+   // this.baseRef.update(this.firebaseKey, this.firebaseRaw);
+  }
+
+  delete(index: number) {
+      this.firebaseRaw.splice(index, 1);
   }
 
   addFlag() {

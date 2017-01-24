@@ -6,6 +6,7 @@
 
 # dependencies
 /node_modules
+/ics_strings
 
 # IDEs and editors
 /.idea

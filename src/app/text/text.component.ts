@@ -22,39 +22,37 @@ export class TextComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.tefila == undefined) return;
+    this.sections.length = 0;
     for (let route of this.tefila.subRoutes) {
-      let sectionObservable = this.af.database.list('public/' + route)
-        .map(snapshots => {
-          this.sections.length = 0;
-          let section = new Tefila();
-          snapshots.forEach(snapshot => {
-            //get title of section and add it
-            if (snapshot.$key == 'title') {
-              section.name = snapshot.$value;
-            }
+      let section = new Tefila();
+      let sectionObservable = this.af.database.object('public/' + route)
+        .subscribe(snapshot => {
+          console.log(snapshot)
+          section.name = snapshot['title'];
 
-            //get our nusach's version of this section
-            if (snapshot.$key.includes(this.userPrefs.userNusach.key)) {
-              for (let brocha of snapshot) {
-                for (let brochaKey in brocha) {
-                  let route = brochaKey + '/' + brocha[brochaKey];
-                  section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
-                  section.firebaseRefs.push(this.af.database.list('public/' + brochaKey + '/' + brocha[brochaKey]))
-                }
-              }
-            }
-          })
+          let nusachKey = "";
+          for (let key in snapshot) {
+            if (key.includes(this.userPrefs.userNusach.key))
+              nusachKey = key;
+          }
 
-          return section;
+          //get our nusach's version of this section
+          let nusachValues = snapshot[nusachKey];
+          if (nusachValues == undefined) return;
+          for (let brocha of nusachValues) {
+            for (let brochaKey in brocha) {
+              let route = brochaKey + '/' + brocha[brochaKey];
+              section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
+              section.firebaseRefs.push(this.af.database.list('public/' + brochaKey + '/' + brocha[brochaKey]))
+            }
+          }
+          this.sections.push(section);
         });
-      sectionObservable.subscribe(section => {
-        this.sections.push(section);
-      })
     }
   }
 
   textClicked(ref: FirebaseListObservable<any>) {
-    if(!this.userPrefs.isAdmin) return;
+    if (!this.userPrefs.isAdmin) return;
     if (this.inEdit == ref)
       this.inEdit = null;
     else
