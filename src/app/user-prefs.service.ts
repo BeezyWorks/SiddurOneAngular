@@ -29,6 +29,8 @@ export class UserPrefsService {
   modernHolidaysKey: string = "modernHolidays";
   modernHolidays: boolean = true;
 
+  editModeSource = new BehaviorSubject<boolean>(false);
+  $editMode = this.editModeSource.asObservable();
   isAdmin: boolean;
 
   constructor(private af: AngularFire) {
@@ -46,12 +48,9 @@ export class UserPrefsService {
         localStorage.setItem(this.modernHolidaysKey, userOptions[this.modernHolidaysKey]);
 
         af.database.object('admins/').subscribe(admins => {
-          console.log(admins);
-          console.log(this.user.uid);
           let val = admins[this.user.uid];
           if (val != undefined)
             this.isAdmin = val;
-          console.log(this.isAdmin);
         })
       })
     });
@@ -79,6 +78,10 @@ export class UserPrefsService {
     this.inIsrael = localStorage.getItem(this.inIsraelKey) == 'true';
     this.inJerusalem = localStorage.getItem(this.inJerusalemKey) == 'true';
     this.modernHolidays = localStorage.getItem(this.modernHolidaysKey) != 'false';
+  }
+
+  setEditMode(inEdit: boolean) {
+    this.editModeSource.next(inEdit);
   }
 
   loggedInUser(keepLocalValues: boolean = false) {

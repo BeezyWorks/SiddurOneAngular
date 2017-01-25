@@ -35,4 +35,7 @@
   <div *ngFor="let tab of navTabs">
     <button class="nav-tab" md-button routerLink={{tab.routing}} routerLinkActive="inactive">{{tab.title}}</button>
   </div>
+  <md-slide-toggle *ngIf="userPrefs.isAdmin" [checked]="editMode" (change)="toggleEditMode($event.checked)">
+   Edit Mode
+  </md-slide-toggle>
 </div>

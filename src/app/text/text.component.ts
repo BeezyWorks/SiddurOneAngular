@@ -27,7 +27,6 @@ export class TextComponent implements OnChanges {
       let section = new Tefila();
       let sectionObservable = this.af.database.object('public/' + route)
         .subscribe(snapshot => {
-          console.log(snapshot)
           section.name = snapshot['title'];
 
           let nusachKey = "";

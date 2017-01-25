@@ -6,8 +6,7 @@ import { AngularFire } from 'angularfire2';
 @Component({
   selector: 'header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
-  providers: [HebrewDateService, UserPrefsService],
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   dateTitle: string;
@@ -18,6 +17,8 @@ export class HeaderComponent implements OnInit {
     { title: 'About', routing: '/about' }
   ];
 
+  editMode: boolean;
+
   constructor(private hebrewDate: HebrewDateService, public userPrefs: UserPrefsService, public af: AngularFire) {
     this.dateTitle = hebrewDate.formattedDate;
   }
@@ -25,18 +26,22 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  toggleEditMode(checked: any) {
+    this.userPrefs.setEditMode(checked);
+  }
+
   nusachPicked(selected) {
     this.userPrefs.setUserNusach(selected);
   }
 
   login() {
-    this.af.auth.login().then((auth)=>{
+    this.af.auth.login().then((auth) => {
       this.userPrefs.user = auth;
       this.userPrefs.loggedInUser();
     });
   }
 
-  logout(){
+  logout() {
     this.af.auth.logout();
   }
 

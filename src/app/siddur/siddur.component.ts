@@ -28,55 +28,14 @@ export class SiddurComponent implements OnInit {
     });
   }
 
-  selectTefila(tefilaKey: string) {
-    let key = 'public/' + tefilaKey;
-    let arrayAwait = this.af.database.object(key).map(tefila => {
-      for (let key in tefila) {
-        if (key.includes(this.nusachKey)) {
-          return tefila[key];
-        }
+  selectTefila(array: Array<any>) {
+    let tefila = new Tefila();
+    for (let object of array) {
+      for (let key in object) {
+        tefila.subRoutes.push(key + '/' + object[key]);
       }
-    });
-
-    arrayAwait.subscribe(array => {
-      let tefila = new Tefila();
-      for (let object of array) {
-        for (let key in object) {
-          tefila.subRoutes.push(key + '/' + object[key]);
-        }
-      }
-      this.selectedTefila = tefila;
-    })
-  }
-
-  tefilaSelected(tefila: Tefila) {
-    this.selectedTefila = tefila;
-    for (let route of tefila.subRoutes) {
-      let section = new Tefila();
-      this.af.database.list('public/sections/')
-      this.af.database.list('public/sections/' + route)
-        .subscribe(snapshots => {
-          snapshots.forEach(snapshot => {
-
-            //get title of section and add it
-            if (snapshot.$key == 'title') {
-              section.name = snapshot.$value;
-            }
-
-            //get our nusach's version of this section
-            if (snapshot.$key.includes(this.userPrefs.userNusach.key)) {
-              for (let brocha of snapshot) {
-                for (let brochaKey in brocha) {
-                  let route = brochaKey + '/' + brocha[brochaKey];
-                  section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
-                  section.firebaseRefs.push(this.af.database.list('public/' + brochaKey + '/' + brocha[brochaKey]))
-                }
-              }
-            }
-          })
-          this.sections.push(section);
-        });
     }
+    this.selectedTefila = tefila;
   }
 
 }
