@@ -20,7 +20,9 @@ export class HeaderComponent implements OnInit {
   editMode: boolean;
 
   constructor(private hebrewDate: HebrewDateService, public userPrefs: UserPrefsService, public af: AngularFire) {
-    this.dateTitle = hebrewDate.formattedDate;
+    hebrewDate.$formattedDate.subscribe(formattedDate=>{
+      this.dateTitle=formattedDate;
+    });
   }
 
   ngOnInit() {

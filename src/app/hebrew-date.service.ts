@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { BehaviorSubject } from 'rxjs';
 import * as Hebcal from 'hebcal';
 
 @Injectable()
@@ -7,7 +8,8 @@ export class HebrewDateService {
     $evaluationKeys: FirebaseObjectObservable<any>;
     hDate: any;
 
-    formattedDate: string;
+    private formattedDateSource = new BehaviorSubject<string>("");
+    $formattedDate = this.formattedDateSource.asObservable();
     isTachanun: boolean;
     shabbos: boolean;
     chanuka: boolean;
@@ -44,6 +46,12 @@ export class HebrewDateService {
             this.shkia = zemanim['shkiah'];
             this.tzais = zemanim['tzeit'];
             this.chatzos_halaila = zemanim['chatzot_night'];
+
+            if (new Date().getUTCMilliseconds().valueOf() > this.shkia.getUTCMilliseconds()) {
+                this.hDate = this.hDate.next();
+            }
+
+            this.initHDate();
         }));
 
         this.initHDate();
@@ -54,7 +62,7 @@ export class HebrewDateService {
 
     initHDate() {
 
-        this.formattedDate = this.hDate.toString('h');
+        this.formattedDateSource.next(this.hDate.toString('h'));
         this.isTachanun = this.hDate.tachanun() != 0;
         this.shabbos = this.hDate.getDay() == 6;
 
