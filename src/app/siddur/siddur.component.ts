@@ -33,9 +33,7 @@ export class SiddurComponent implements OnInit {
     for (let key in tefila) {
       if (key.includes(this.nusachKey)) {
         for (let route of tefila[key]) {
-          for (let routeKey in route) {
-            tefila.subRoutes.push(routeKey + '/' + route[routeKey]);
-          }
+            tefila.subRoutes.push(route);
         }
       }
     }

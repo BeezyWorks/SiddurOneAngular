@@ -38,12 +38,9 @@ export class TextComponent implements OnChanges {
           //get our nusach's version of this section
           let nusachValues = snapshot[nusachKey];
           if (nusachValues == undefined) return;
-          for (let brocha of nusachValues) {
-            for (let brochaKey in brocha) {
-              let route = brochaKey + '/' + brocha[brochaKey];
-              section.subRoutes.push(brochaKey + '/' + brocha[brochaKey]);
-              section.firebaseRefs.push(this.af.database.list('public/' + brochaKey + '/' + brocha[brochaKey]))
-            }
+          for (let route of nusachValues) {
+            section.subRoutes.push(route);
+            section.firebaseRefs.push(this.af.database.list('public/' + route))
           }
           this.sections.push(section);
         });
