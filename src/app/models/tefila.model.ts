@@ -1,7 +1,7 @@
 import { FirebaseListObservable } from 'angularfire2';
 
 export class Tefila {
-    name: string;
+    title: string;
     subRoutes: string[] = [];
     firebaseRefs: FirebaseListObservable<any>[]=[]; 
 }

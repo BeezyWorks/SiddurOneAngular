@@ -23,6 +23,7 @@ import { ZemanimComponent } from './zemanim/zemanim.component';
 import { ParseTextPipe } from './parse-text.pipe';
 import { SiddurNavigationComponent } from './siddur-navigation/siddur-navigation.component';
 import { EditTextComponent } from './edit-text/edit-text.component';
+import { SectionNavigationComponent } from './section-navigation/section-navigation.component';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBDpTCrfZknC0uYnTdeedD3NC4joV8gSus",
@@ -59,7 +60,8 @@ const appRoutes: Routes = [
     ZemanimComponent,
     ParseTextPipe,
     SiddurNavigationComponent,
-    EditTextComponent
+    EditTextComponent,
+    SectionNavigationComponent
   ],
   imports: [
     MaterialModule.forRoot(),

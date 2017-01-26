@@ -4,7 +4,7 @@
   <div fxFlex="3"></div>
 
   <!-- Top level navigation -->
-  <div  fxFlex="20">
+  <div fxFlex="20">
     <siddur-navigation [nusach]="nusachKey" (tefilaSelected)="selectTefila($event)"></siddur-navigation>
   </div>
 
@@ -21,13 +21,7 @@
 
   <!-- Secondary Navigation -->
   <md-card class="tefila-list-header" fxFlex="15">
-    <md-card-content>
-      <md-list>
-        <md-list-item *ngFor="let section of sections">
-          <h3 md-line> {{section.name}} </h3>
-        </md-list-item>
-      </md-list>
-    </md-card-content>
+    <section-navigation [tefila]="selectedTefila"></section-navigation>
   </md-card>
 
   <!-- Spacer -->
@@ -35,15 +29,15 @@
 </div>
 
 <!--mobile layout-->
-<md-sidenav-container  *showItSizes="{max:749}" class="content">
-  <md-sidenav class="sidenav-mobile" #start >
-       <siddur-navigation [nusach]="nusachKey" (tefilaSelected)="selectTefila($event)"></siddur-navigation>
+<md-sidenav-container *showItSizes="{max:749}" class="content">
+  <md-sidenav class="sidenav-mobile" #start>
+    <siddur-navigation [nusach]="nusachKey" (tefilaSelected)="selectTefila($event)"></siddur-navigation>
   </md-sidenav>
 
   <div class="subheader-mobile">
     <button md-icon-button (click)="start.open()"> <md-icon>menu</md-icon></button>
   </div>
-<div  class="content-frame-mobile">
-  <app-text [tefila]="selectedTefila"></app-text>
-</div>
+  <div class="content-frame-mobile">
+    <app-text [tefila]="selectedTefila"></app-text>
+  </div>
 </md-sidenav-container>

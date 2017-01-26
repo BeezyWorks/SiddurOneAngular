@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { UserPrefsService } from '../user-prefs.service';
+import { Tefila } from '../models/tefila.model';
 
 @Component({
   selector: 'siddur-navigation',
@@ -13,9 +14,9 @@ export class SiddurNavigationComponent implements OnChanges, OnInit {
 
   @Input() nusach: string;
 
-  @Output() tefilaSelected = new EventEmitter<string>();
+  @Output() tefilaSelected = new EventEmitter<Tefila>();
   topLevels: NavRef[] = [];
-  addBelow: any;
+  addBelow: Tefila;
   newTefilaTitle: string;
   editMode: boolean;
 
@@ -31,13 +32,8 @@ export class SiddurNavigationComponent implements OnChanges, OnInit {
 
   }
 
-  selectTefila(tefila: any) {
-    console.log(tefila);
-    for (let key in tefila) {
-      if (key.includes(this.userPrefs.userNusach.key)) {
-        this.tefilaSelected.emit(tefila[key]);
-      }
-    }
+  selectTefila(tefila: Tefila) {
+    this.tefilaSelected.emit(tefila);
   }
 
   ngOnChanges() {
@@ -62,14 +58,16 @@ export class SiddurNavigationComponent implements OnChanges, OnInit {
   }
 
 
-  showAddTefila(previousTefila: any) {
+  showAddTefila(previousTefila: Tefila) {
     this.addBelow = previousTefila;
   }
 
-  addTefila(navSection: NavRef, previousTefila: any) {
+  addTefila(navSection: NavRef, previousTefila: Tefila) {
     let index: number = navSection.tefilot.indexOf(previousTefila);
     index += 1;
-    navSection.tefilot.splice(index, 0, { title: this.newTefilaTitle });
+    let newTefila = new Tefila();
+    newTefila.title = this.newTefilaTitle;
+    navSection.tefilot.splice(index, 0, newTefila);
     for (let top of this.topLevels) {
       for (let key in top) {
         if (key.includes('$'))
@@ -82,7 +80,7 @@ export class SiddurNavigationComponent implements OnChanges, OnInit {
 }
 export class NavRef {
   title: string;
-  tefilot: Array<any>;
-  includedTefilot: Array<any>;
+  tefilot: Array<Tefila>;
+  includedTefilot: Array<Tefila>;
 }
 

@@ -28,11 +28,15 @@ export class SiddurComponent implements OnInit {
     });
   }
 
-  selectTefila(array: Array<any>) {
-    let tefila = new Tefila();
-    for (let object of array) {
-      for (let key in object) {
-        tefila.subRoutes.push(key + '/' + object[key]);
+  selectTefila(tefila: Tefila) {
+    tefila.subRoutes=[];
+    for (let key in tefila) {
+      if (key.includes(this.nusachKey)) {
+        for (let route of tefila[key]) {
+          for (let routeKey in route) {
+            tefila.subRoutes.push(routeKey + '/' + route[routeKey]);
+          }
+        }
       }
     }
     this.selectedTefila = tefila;
