@@ -29,6 +29,10 @@ export class UserPrefsService {
   modernHolidaysKey: string = "modernHolidays";
   modernHolidays: boolean = true;
 
+  wedding: boolean;
+  bris: boolean;
+  avel: boolean;
+
   editModeSource = new BehaviorSubject<boolean>(false);
   $editMode = this.editModeSource.asObservable();
   isAdmin: boolean;

@@ -49,6 +49,8 @@ export class EditTextComponent {
   addingFlag: boolean;
   newFlag: string;
 
+  showTranslations: TextElement;
+
   @Input() set ref(ref: FirebaseListObservable<any>) {
     this.baseRef = ref;
     ref.subscribe(value => {
@@ -69,11 +71,11 @@ export class EditTextComponent {
       }
     }
     this.baseRef.$ref.ref.child(this.firebaseKey).set(this.firebaseRaw);
-   // this.baseRef.update(this.firebaseKey, this.firebaseRaw);
+    // this.baseRef.update(this.firebaseKey, this.firebaseRaw);
   }
 
   delete(index: number) {
-      this.firebaseRaw.splice(index, 1);
+    this.firebaseRaw.splice(index, 1);
   }
 
   addFlag() {
@@ -87,6 +89,14 @@ export class EditTextComponent {
 
   addElement(index: number) {
     this.firebaseRaw.splice(index + 1, 0, new TextElement());
+  }
+
+  toggleTranslations(textElement: TextElement) {
+    if (textElement.translations == undefined) textElement.translations = new Translations();
+    if (this.showTranslations == textElement)
+      this.showTranslations = null;
+    else
+      this.showTranslations = textElement;
   }
 
   containsFlag(flag: string) {
@@ -139,8 +149,16 @@ export class EditTextComponent {
 
 export class TextElement {
   text: string;
+  translations: Translations;
   flags: string[];
   evaluations: any;
+}
+
+export class Translations {
+  english: string;
+  french: string;
+  russian: string;
+  spanish: string;
 }
 
 export class BooleanArray {

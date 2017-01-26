@@ -2,6 +2,10 @@
   <div class="edit-area">
     <h2>Text</h2>
     <textarea md-textarea [(ngModel)]="textElement.text"></textarea>
+    <h3 (click)=" toggleTranslations(textElement)">Translations</h3>
+    <div *ngIf = "showTranslations==textElement">
+      <textarea md-textarea [(ngModel)]="textElement.translations.english"></textarea>
+    </div>
     <h3 (click)="showOptons(textElement)">Options</h3>
     <div *ngIf="showOptionsElement == textElement">
       <div *ngFor="let flag of flags">
@@ -27,7 +31,7 @@
       <h4>Calendar Evals</h4>
       <div *ngFor="let eval of calendarEvals">
         <md-radio-group [(ngModel)]="textElement.evaluations[eval]" (change)="toggleEvaluation(textElement, eval, $event.value)">
-           <p class="eval-title"> {{eval}} </p>
+          <p class="eval-title"> {{eval}} </p>
           <md-radio-button value=true>true</md-radio-button>
           <md-radio-button value="false" [checked]="textElement.evaluations[eval]==false">false</md-radio-button>
           <md-radio-button value=undefined [checked]="textElement.evaluations[eval]==undefined">ignore</md-radio-button>
@@ -36,7 +40,7 @@
       <h4>Preference Evals</h4>
       <div *ngFor="let eval of preferenceEvals">
         <md-radio-group [(ngModel)]="textElement.evaluations[eval]" [value]="textElement.evaluations[eval]" (change)="toggleEvaluation(textElement, eval, $event.value)">
-            <p class="eval-title"> {{eval}} </p>
+          <p class="eval-title"> {{eval}} </p>
           <md-radio-button value="true" [checked]="textElement.evaluations[eval]==true">true</md-radio-button>
           <md-radio-button value="false" [checked]="textElement.evaluations[eval]==false">false</md-radio-button>
           <md-radio-button value="undefined" [checked]="textElement.evaluations[eval]==undefined">ignore</md-radio-button>

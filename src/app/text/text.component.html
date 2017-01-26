@@ -1,7 +1,7 @@
 <md-card>
     <md-card-content>
         <div *ngFor="let section of sections">
-            <h3 class="section-title"> {{section.name}} </h3>
+            <h3 class="section-title"> {{section.title}} </h3>
             <div class="content-text" *ngFor="let path of section?.firebaseRefs">
                 <p (click)="textClicked(path)" [innerHtml]="path | async | parseText | safeHtml"></p>
                 <edit-text *ngIf="inEdit==path" [ref]="path"></edit-text>

@@ -9,31 +9,55 @@ import { Tefila } from './models/tefila.model';
 })
 export class ParseTextPipe implements PipeTransform {
 
- checks: TextFlags[] = [
+  checks: TextFlags[] = [
     { key: 'bold', openingTag: '<strong>', closingTag: '</strong>' },
     { key: 'special_color', openingTag: '<span style="color:green">', closingTag: '</span>' },
-    { key: 'large', openingTag: '<large>', closingTag: '</large>' },
+    { key: 'large', openingTag: '<big>', closingTag: '</big>' },
     { key: 'small', openingTag: '<small>', closingTag: '</small>' },
-    { key: 'subtitle', openingTag: '<small>', closingTag: '</small>' }
+    { key: 'subtitle', openingTag: '<small>', closingTag: '</small>' },
+    { key: 'italic', openingTag: '<em>', closingTag: '</em>' }
   ]
 
-  constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) { }
+  calendarEvaluations: any;
+  preferenceEvaluations: any;
+
+  constructor(public af: AngularFire, public hebrewDate: HebrewDateService, public userPrefs: UserPrefsService) {
+
+    userPrefs.$evaluationKeys.subscribe(keys => {
+      this.preferenceEvaluations = keys;
+    })
+
+    hebrewDate.$evaluationKeys.subscribe(keys => {
+      this.calendarEvaluations = keys;
+    })
+  }
 
   transform(brochaArray: any, args?: any): any {
     let html = "";
-    if(brochaArray==undefined) return "";
+    if (brochaArray == undefined) return "";
     for (let raw of brochaArray[0]) {
-      if(raw==undefined) continue;
+      if (raw == undefined) continue;
       let text = raw['text'];
       let ref = raw['ref'];
+      let translations = raw['translations'];
+
+      // if(translations!=undefined){
+      //   text=translations['english'];
+      // }
 
       if (raw == "linebreak" || text == "linebreak") {
         text = "<br>";
       }
 
-      let andEval = this.evaluateBoolFlags(raw['and'], true);
-      let orEval = this.evaluateBoolFlags(raw['or'], false);
-      if (andEval && orEval) {
+      let evaluation = true;
+      let evaluationRaw = raw['evaluations'];
+      if (evaluationRaw != undefined) {
+        let isAnd = evaluationRaw['type'] == 'and';
+        evaluation = this.evaluateBoolFlags(evaluationRaw, isAnd);
+      }
+      // let andEval = this.evaluateBoolFlags(raw['and'], true);
+      // let orEval = this.evaluateBoolFlags(raw['or'], false);
+      if (evaluation) {
         this.htmls.push(this.textToHtml(text, raw['flags']));
         html += this.textToHtml(text, raw['flags']);
         if (ref != undefined) {
@@ -45,22 +69,25 @@ export class ParseTextPipe implements PipeTransform {
   }
 
   //takes a list of string keys and assess true or false
-  evaluateBoolFlags(flags: string[], andEvaluation: boolean): boolean {
+  evaluateBoolFlags(flags: any, andEvaluation: boolean): boolean {
     if (flags == undefined) return true;
-    for (let key of flags) {
+    for (let key in flags) {
+      if (key == 'type') continue;
+
       let shouldShow = false;
-      let notCondition = key.includes('!');
-      //remove the '!' so the keys matchup
-      key = key.replace('!', '');
+
       if (this.userPrefs.hasOwnProperty(key)) {
         shouldShow = this.userPrefs[key];
       }
+
       if (this.hebrewDate.hasOwnProperty(key)) {
         shouldShow = this.hebrewDate[key];
       }
-      if (notCondition) {
+
+      if (flags[key] == "false") {
         shouldShow = !shouldShow;
       }
+
       if (shouldShow && !andEvaluation) {
         return true;
       }
